@@ -44,4 +44,9 @@ public class CurriculumController {
     public ResponseEntity<Map<String, String>> handleValidation(IllegalArgumentException e) {
         return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Map<String, String>> handleGeneral(Exception e) {
+        return ResponseEntity.internalServerError().body(Map.of("error", e.getMessage()));
+    }
 }
