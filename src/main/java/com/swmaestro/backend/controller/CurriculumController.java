@@ -3,6 +3,8 @@ package com.swmaestro.backend.controller;
 import com.swmaestro.backend.dto.*;
 import com.swmaestro.backend.service.CurriculumService;
 import com.swmaestro.backend.service.EmailService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +13,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api")
 public class CurriculumController {
+
+    private static final Logger log = LoggerFactory.getLogger(CurriculumController.class);
 
     private final CurriculumService curriculumService;
     private final EmailService emailService;
@@ -47,6 +51,7 @@ public class CurriculumController {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleGeneral(Exception e) {
+        log.error("Unhandled exception", e);
         return ResponseEntity.internalServerError().body(Map.of("error", e.getMessage()));
     }
 }
