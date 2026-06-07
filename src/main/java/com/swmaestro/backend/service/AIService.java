@@ -14,10 +14,10 @@ import java.util.Map;
 @Service
 public class AIService {
 
-    private static final String API_URL = "https://api.groq.com/openai/v1/chat/completions";
-    private static final String MODEL   = "llama-3.3-70b-versatile";
+    private static final String API_URL = "https://api.upstage.ai/v1/chat/completions";
+    private static final String MODEL   = "solar-pro";
 
-    @Value("${groq.api-key}")
+    @Value("${upstage.api-key}")
     private String apiKey;
 
     private final RestTemplate restTemplate;
