@@ -116,6 +116,22 @@ public class CurriculumService {
             default             -> "초급";
         };
 
+        // 이전 세션 채팅 이력을 학습자 선호로 주입 (있을 때만)
+        List<String> history = req.getChatHistory().stream()
+            .filter(h -> h != null && !h.isBlank())
+            .limit(20)
+            .toList();
+        history.forEach(h -> validateInput(h, 500, "이전 선호"));
+
+        String preferenceBlock = history.isEmpty() ? "" : """
+
+                이전 세션에서 이 학습자가 커리큘럼에 요청한 수정 이력입니다.
+                처음부터 이 선호를 반영하여 커리큘럼을 작성하세요:
+                %s
+                """.formatted(history.stream()
+                    .map(h -> "- " + h)
+                    .reduce("", (a, b) -> a + "\n" + b));
+
         String prompt = """
                 당신은 개인화된 학습 커리큘럼 설계 전문가입니다.
                 아래 학습자 정보를 바탕으로 상세한 학습 로드맵을 마크다운 형식으로 작성하세요.
@@ -125,7 +141,7 @@ public class CurriculumService {
                 - 학습 역량: %s
                 - 학습 기간: %d주
                 - 추가 답변:
-                %s
+                %s%s
 
                 작성 조건:
                 1. 반드시 한국어(한글)로만 작성하세요. 한자(漢字)나 중국어는 절대 사용하지 마세요.
@@ -134,7 +150,7 @@ public class CurriculumService {
                 4. 각 단계마다 핵심 개념, 추천 자료, 실습 과제 포함
                 5. 마지막에 전체 학습 일정 요약 표 포함
                 6. "핵심 개념", "추천 자료", "실습 과제" 등 섹션 구분은 반드시 #### 헤더로 작성하세요. - 목록 아이템으로 쓰지 마세요.
-                """.formatted(req.getStudyTarget(), levelKor, req.getStudyWeeks(), answersText);
+                """.formatted(req.getStudyTarget(), levelKor, req.getStudyWeeks(), answersText, preferenceBlock);
 
         String curriculum = ai.call(prompt);
         return new BuildResponse(curriculum);
