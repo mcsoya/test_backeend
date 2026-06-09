@@ -39,6 +39,11 @@ public class CurriculumService {
                   (예: "영상 중심" vs "텍스트/문서 중심", "혼자 학습" vs "커뮤니티 활용")
                   학습과 무관한 일상적 사물(냄비, 오븐 등)은 절대 사용하지 마세요.
 
+                choice 타입의 icon 값은 반드시 아래 목록 중 하나만 사용하세요. 목록에 없는 이름은 절대 사용하지 마세요:
+                play_circle, menu_book, school, code, group, person, edit_note,
+                psychology, sports_esports, lightbulb, timer, trending_up,
+                laptop, headphones, videogame_asset, brush, science, fitness_center
+
                 {
                   "questions": [
                     {
@@ -65,8 +70,8 @@ public class CurriculumService {
                       "type": "choice",
                       "required": true,
                       "options": [
-                        {"value": "opt1", "label": "서로 배타적인 학습 스타일 선택지1", "icon": "Material Symbol 아이콘 이름"},
-                        {"value": "opt2", "label": "서로 배타적인 학습 스타일 선택지2", "icon": "Material Symbol 아이콘 이름"}
+                        {"value": "opt1", "label": "서로 배타적인 학습 스타일 선택지1", "icon": "play_circle"},
+                        {"value": "opt2", "label": "서로 배타적인 학습 스타일 선택지2", "icon": "menu_book"}
                       ]
                     }
                   ]
